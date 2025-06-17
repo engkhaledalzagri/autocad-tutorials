@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BookOpen, TrendingUp, Star } from 'lucide-react';
+import AdSenseComponent from './AdSenseComponent';
 
 const Sidebar = () => {
   const popularPosts = [
@@ -33,16 +34,15 @@ const Sidebar = () => {
 
   return (
     <aside className="space-y-6">
-      {/* Google AdSense Placeholder */}
-      <Card className="bg-gradient-to-br from-gray-100 to-gray-200">
-        <CardContent className="p-4">
-          <div className="h-64 flex items-center justify-center border-2 border-dashed border-gray-400 rounded-lg">
-            <div className="text-center text-gray-600">
-              <div className="text-sm font-cairo mb-2">مساحة إعلانية</div>
-              <div className="text-xs">Google AdSense</div>
-              <div className="text-xs">300 × 250</div>
-            </div>
-          </div>
+      {/* Google AdSense - Rectangle */}
+      <Card className="overflow-hidden">
+        <CardContent className="p-0">
+          <AdSenseComponent 
+            adSlot="1234567890"
+            width={300}
+            height={250}
+            className="w-full"
+          />
         </CardContent>
       </Card>
 
@@ -118,15 +118,15 @@ const Sidebar = () => {
         </CardContent>
       </Card>
 
-      {/* Another Ad Space */}
-      <Card className="bg-gradient-to-br from-gray-100 to-gray-200">
-        <CardContent className="p-4">
-          <div className="h-32 flex items-center justify-center border-2 border-dashed border-gray-400 rounded-lg">
-            <div className="text-center text-gray-600">
-              <div className="text-sm font-cairo mb-1">مساحة إعلانية</div>
-              <div className="text-xs">300 × 120</div>
-            </div>
-          </div>
+      {/* Google AdSense - Banner */}
+      <Card className="overflow-hidden">
+        <CardContent className="p-0">
+          <AdSenseComponent 
+            adSlot="0987654321"
+            width={300}
+            height={120}
+            className="w-full"
+          />
         </CardContent>
       </Card>
     </aside>
