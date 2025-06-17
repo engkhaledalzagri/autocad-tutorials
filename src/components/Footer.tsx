@@ -1,5 +1,5 @@
 
-import { BookOpen, Video, Image, Mail, Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
+import { BookOpen, Video, Image, Mail, Facebook, Twitter, Youtube, Instagram, Send } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -29,10 +29,10 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#", color: "hover:text-blue-600" },
-    { name: "Twitter", icon: Twitter, href: "#", color: "hover:text-blue-400" },
-    { name: "YouTube", icon: Youtube, href: "#", color: "hover:text-red-600" },
-    { name: "Instagram", icon: Instagram, href: "#", color: "hover:text-pink-600" }
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/Eng.Khaled.Alzagri", color: "hover:text-blue-600" },
+    { name: "YouTube", icon: Youtube, href: "https://www.youtube.com/@Eng.KhaledAl-Zagri", color: "hover:text-red-600" },
+    { name: "Telegram", icon: Send, href: "https://t.me/K0H1A2L3E4D5", color: "hover:text-blue-500" },
+    { name: "Email", icon: Mail, href: "mailto:engkhaledalzagri2019@gmail.com", color: "hover:text-green-600" }
   ];
 
   return (
@@ -53,12 +53,24 @@ const Footer = () => {
               مدونتك الشاملة لتعلم برنامج الأوتوكاد من الصفر إلى الاحتراف مع دروس مجانية وفيديوهات تعليمية وشروحات مفصلة.
             </p>
             
+            {/* Contact Info */}
+            <div className="mb-6 space-y-2">
+              <div className="flex items-center gap-2 text-sm text-gray-300">
+                <Mail className="w-4 h-4 text-autocad-blue" />
+                <a href="mailto:engkhaledalzagri2019@gmail.com" className="hover:text-white transition-colors">
+                  engkhaledalzagri2019@gmail.com
+                </a>
+              </div>
+            </div>
+            
             {/* Social Links */}
             <div className="flex space-x-4 space-x-reverse">
               {socialLinks.map((social) => (
                 <a 
                   key={social.name}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`text-gray-400 ${social.color} transition-colors p-2 hover:bg-white/10 rounded-lg`}
                   aria-label={social.name}
                 >

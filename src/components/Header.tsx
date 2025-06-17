@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Book, BookOpen, Video, Image } from 'lucide-react';
+import { Book, BookOpen, Video, Image, Mail, Facebook, Youtube, Send } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +11,13 @@ const Header = () => {
     { name: 'الدروس', href: '#tutorials', icon: BookOpen },
     { name: 'الفيديوهات', href: '#videos', icon: Video },
     { name: 'الصور', href: '#images', icon: Image },
+  ];
+
+  const socialLinks = [
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/Eng.Khaled.Alzagri", color: "hover:text-blue-600" },
+    { name: "YouTube", icon: Youtube, href: "https://www.youtube.com/@Eng.KhaledAl-Zagri", color: "hover:text-red-600" },
+    { name: "Telegram", icon: Send, href: "https://t.me/K0H1A2L3E4D5", color: "hover:text-blue-500" },
+    { name: "Email", icon: Mail, href: "mailto:engkhaledalzagri2019@gmail.com", color: "hover:text-green-600" }
   ];
 
   return (
@@ -44,8 +51,25 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* Social Links & CTA */}
+          <div className="hidden md:flex items-center space-x-4 space-x-reverse">
+            {/* Social Icons */}
+            <div className="flex space-x-2 space-x-reverse">
+              {socialLinks.map((social) => (
+                <a 
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-gray-500 ${social.color} transition-colors p-1 hover:bg-gray-100 rounded`}
+                  aria-label={social.name}
+                >
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+            
+            {/* CTA Button */}
             <Button className="bg-hero-gradient hover:opacity-90 text-white font-cairo px-6">
               ابدأ التعلم الآن
             </Button>
@@ -79,6 +103,23 @@ const Header = () => {
                   <span>{item.name}</span>
                 </a>
               ))}
+              
+              {/* Mobile Social Links */}
+              <div className="flex space-x-4 space-x-reverse justify-center py-2">
+                {socialLinks.map((social) => (
+                  <a 
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-gray-500 ${social.color} transition-colors p-2 hover:bg-gray-100 rounded-lg`}
+                    aria-label={social.name}
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+              
               <Button className="bg-hero-gradient hover:opacity-90 text-white font-cairo mt-4">
                 ابدأ التعلم الآن
               </Button>
