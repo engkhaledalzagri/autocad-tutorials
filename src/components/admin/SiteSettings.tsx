@@ -12,9 +12,9 @@ const SiteSettings = () => {
   const [settings, setSettings] = useState({
     siteName: 'مدونة تعلم الأوتوكاد',
     siteDescription: 'أفضل مدونة لتعلم برنامج الأوتوكاد مع دروس مجانية',
-    siteUrl: 'https://your-domain.com',
+    siteUrl: 'https://autocad-tutorials.netlify.app/',
     email: 'engkhaledalzagri2019@gmail.com',
-    phone: '+966123456789',
+    phone: '+967 775910004',
     facebook: 'https://www.facebook.com/Eng.Khaled.Alzagri',
     telegram: 'https://t.me/K0H1A2L3E4D5',
     youtube: 'https://www.youtube.com/@Eng.KhaledAl-Zagri',
@@ -25,7 +25,7 @@ const SiteSettings = () => {
     googleAdsense: 'ca-pub-7511115833815306',
     maintenanceMode: false,
     commentsEnabled: true,
-    registrationEnabled: false
+    registrationEnabled: true
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
