@@ -18,13 +18,13 @@ const Header = () => {
             <Link to="/" className="text-gray-700 hover:text-blue-600">
               الرئيسية
             </Link>
-            <Link to="#tutorials" className="text-gray-700 hover:text-blue-600">
+            <Link to="/tutorials" className="text-gray-700 hover:text-blue-600">
               الدروس
             </Link>
-            <Link to="#about" className="text-gray-700 hover:text-blue-600">
+            <Link to="/about" className="text-gray-700 hover:text-blue-600">
               حول الموقع
             </Link>
-            <Link to="#contact" className="text-gray-700 hover:text-blue-600">
+            <Link to="/contact" className="text-gray-700 hover:text-blue-600">
               تواصل معنا
             </Link>
             <Link 

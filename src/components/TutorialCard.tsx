@@ -3,8 +3,10 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Video, Image, Calendar, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface TutorialCardProps {
+  id?: number;
   title: string;
   description: string;
   type: 'tutorial' | 'video' | 'image';
@@ -16,6 +18,7 @@ interface TutorialCardProps {
 }
 
 const TutorialCard = ({ 
+  id = 1,
   title, 
   description, 
   type, 
@@ -99,9 +102,11 @@ const TutorialCard = ({
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full bg-autocad-blue hover:bg-autocad-blue/90 text-white font-cairo">
-          اقرأ المزيد
-        </Button>
+        <Link to={`/tutorial/${id}`} className="w-full">
+          <Button className="w-full bg-autocad-blue hover:bg-autocad-blue/90 text-white font-cairo">
+            اقرأ المزيد
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
