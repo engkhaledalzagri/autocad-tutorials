@@ -10,15 +10,17 @@ const VideosPage = () => {
 
   const videos = [
     {
-      id: 1,
-      title: "مقدمة في الأوتوكاد - الدرس الأول",
-      description: "شرح مفصل لواجهة برنامج الأوتوكاد والأدوات الأساسية للمبتدئين",
-      type: "video" as const,
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      date: "2024-01-20",
-      author: "أحمد محمد",
-      tags: ["مبتدئين", "أساسيات", "واجهة"],
-    },
+     {
+  id: 4,
+  title: "Ai Generator lisp For AutoCad",
+  description: "Ai Generator lisp For AutoCad",
+  type: "video",
+  image: "رابط صورة مصغرة",
+  date: "2024-07-01",
+  author: "اسمك",
+  tags: ["Ai Generator lisp For AutoCad"],
+  videoUrl: "https://youtube.com/shorts/K0dpjap6qvM"
+}
     {
       id: 2,
       title: "الرسم الهندسي في الأوتوكاد",
