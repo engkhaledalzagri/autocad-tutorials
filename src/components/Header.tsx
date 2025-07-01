@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Settings } from 'lucide-react';
+import { Settings, User, LogIn, Map } from 'lucide-react';
 
 const Header = () => {
   return (
@@ -21,20 +21,53 @@ const Header = () => {
             <Link to="/tutorials" className="text-gray-700 hover:text-blue-600">
               الدروس
             </Link>
+            <Link to="/videos" className="text-gray-700 hover:text-blue-600">
+              الفيديوهات
+            </Link>
+            <Link to="/images" className="text-gray-700 hover:text-blue-600">
+              الصور
+            </Link>
+            <Link to="/files" className="text-gray-700 hover:text-blue-600">
+              الملفات
+            </Link>
+            <Link to="/explanations" className="text-gray-700 hover:text-blue-600">
+              الشروحات
+            </Link>
             <Link to="/about" className="text-gray-700 hover:text-blue-600">
               حول الموقع
             </Link>
             <Link to="/contact" className="text-gray-700 hover:text-blue-600">
               تواصل معنا
             </Link>
+            <Link to="/sitemap" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+              <Map size={16} />
+              خريطة الموقع
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <Link 
+              to="/login" 
+              className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
+            >
+              <LogIn size={16} />
+              تسجيل الدخول
+            </Link>
+            <Link 
+              to="/profile" 
+              className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
+            >
+              <User size={16} />
+              الملف الشخصي
+            </Link>
             <Link 
               to="/admin" 
-              className="flex items-center gap-2 text-gray-700 hover:text-blue-600 border-r border-gray-300 pr-4 mr-4"
+              className="flex items-center gap-2 text-gray-700 hover:text-blue-600 border-r border-gray-300 pr-4"
             >
               <Settings size={16} />
               لوحة التحكم
             </Link>
-          </nav>
+          </div>
           
           <button className="md:hidden">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
