@@ -1,47 +1,45 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TutorialCard from '@/components/TutorialCard';
 import { Button } from '@/components/ui/button';
+import { getMediaFiles, type MediaFile } from '@/lib/supabase';
 
 const VideosPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [videos, setVideos] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const videos = [
-    {
-     {
-  id: 4,
-  title: "Ai Generator lisp For AutoCad",
-  description: "Ai Generator lisp For AutoCad",
-  type: "video",
-  image: "رابط صورة مصغرة",
-  date: "2024-07-01",
-  author: "اسمك",
-  tags: ["Ai Generator lisp For AutoCad"],
-  videoUrl: "https://youtube.com/shorts/K0dpjap6qvM"
-}
-    {
-      id: 2,
-      title: "الرسم الهندسي في الأوتوكاد",
-      description: "تعلم كيفية رسم الأشكال الهندسية الأساسية والمتقدمة",
-      type: "video" as const,
-      image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      date: "2024-01-18",
-      author: "فاطمة خالد",
-      tags: ["رسم", "هندسة", "متوسط"],
-    },
-    {
-      id: 3,
-      title: "التصميم المعماري ثلاثي الأبعاد",
-      description: "دورة شاملة في التصميم المعماري باستخدام الأوتوكاد",
-      type: "video" as const,
-      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      date: "2024-01-15",
-      author: "عمر حسن",
-      tags: ["معماري", "3D", "متقدم"],
+  useEffect(() => {
+    loadVideos();
+  }, []);
+
+  const loadVideos = async () => {
+    try {
+      const { data, error } = await getMediaFiles('video');
+      if (error) throw error;
+      
+      // Transform MediaFile to video format for TutorialCard
+      const transformedVideos = (data || []).map((file: MediaFile) => ({
+        id: parseInt(file.id),
+        title: file.name,
+        description: file.description || 'فيديو تعليمي للأوتوكاد',
+        type: 'video' as const,
+        image: file.thumbnail_url || file.file_url,
+        date: new Date(file.created_at).toLocaleDateString('ar-SA'),
+        author: file.uploaded_by,
+        tags: [file.category],
+        videoUrl: file.file_url
+      }));
+      
+      setVideos(transformedVideos);
+    } catch (error) {
+      console.error('Error loading videos:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   const categories = [
     { id: 'all', label: 'جميع الفيديوهات', count: videos.length },
@@ -80,13 +78,25 @@ const VideosPage = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {videos.map((video, index) => (
-              <div key={video.id} className="animate-fadeInUp" style={{ animationDelay: `${index * 0.1}s` }}>
-                <TutorialCard {...video} />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="w-8 h-8 border-4 border-autocad-blue border-t-transparent rounded-full animate-spin"></div>
+              <span className="mr-3 text-autocad-gray">جاري التحميل...</span>
+            </div>
+          ) : videos.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {videos.map((video, index) => (
+                <div key={video.id} className="animate-fadeInUp" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <TutorialCard {...video} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <h3 className="text-xl font-bold text-autocad-gray mb-4">لا توجد فيديوهات حالياً</h3>
+              <p className="text-gray-600">سيتم إضافة المزيد من الفيديوهات قريباً</p>
+            </div>
+          )}
         </div>
       </main>
       <Footer />

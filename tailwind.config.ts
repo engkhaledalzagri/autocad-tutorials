@@ -56,14 +56,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom colors for the AutoCAD blog
+				// Custom colors for the AutoCAD blog - using design system
+				'autocad-blue': 'hsl(var(--autocad-blue))',
+				'autocad-blue-light': 'hsl(var(--autocad-blue-light))',
+				'autocad-green': 'hsl(var(--autocad-green))',
+				'autocad-gray': 'hsl(var(--autocad-gray))',
+				'autocad-gray-light': 'hsl(var(--autocad-gray-light))',
+				// Keep legacy colors for backward compatibility
 				autocad: {
-					blue: '#0078D4',
-					'blue-light': '#40E0D0',
-					green: '#00B74A',
-					'green-light': '#90EE90',
-					gray: '#2F3349',
-					'gray-light': '#F8F9FA'
+					blue: 'hsl(var(--autocad-blue))',
+					'blue-light': 'hsl(var(--autocad-blue-light))',
+					green: 'hsl(var(--autocad-green))',
+					'green-light': 'hsl(var(--autocad-green))',
+					gray: 'hsl(var(--autocad-gray))',
+					'gray-light': 'hsl(var(--autocad-gray-light))'
 				}
 			},
 			backgroundImage: {
