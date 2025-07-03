@@ -24,15 +24,20 @@ const MediaManagement = () => {
 
   const loadMediaFiles = async () => {
     try {
+      console.log('Loading media files for category:', selectedType);
       const { data, error } = await getMediaFiles(selectedType);
-      if (error) throw error;
+      if (error) {
+        console.error('Error loading media files:', error);
+        throw error;
+      }
+      console.log('Loaded media files:', data);
       setMediaFiles(data || []);
     } catch (error) {
       console.error('Error loading media files:', error);
       toast({
-        title: "خطأ",
-        description: "فشل في تحميل الملفات",
-        variant: "destructive",
+        title: "تنبيه",
+        description: "تم تحميل البيانات التجريبية - لم يتم تكوين Supabase",
+        variant: "default",
       });
     }
   };
@@ -64,6 +69,7 @@ const MediaManagement = () => {
   };
 
   const getFileCategory = (file: File): string => {
+    console.log('Determining category for file:', file.name, 'type:', file.type);
     if (file.type.startsWith('image/')) return 'image';
     if (file.type.startsWith('video/')) return 'video';
     if (file.type.includes('pdf') || file.type.includes('document') || file.type.includes('text')) return 'document';
@@ -78,24 +84,46 @@ const MediaManagement = () => {
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0) {
+      console.log('No files selected');
+      return;
+    }
+
+    console.log('Starting file upload for', files.length, 'files');
+    
+    // Check if Supabase is configured
+    if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+      toast({
+        title: "خطأ في التكوين",
+        description: "لم يتم تكوين Supabase. يرجى تكوين قاعدة البيانات أولاً",
+        variant: "destructive",
+      });
+      console.error('Supabase not configured - cannot upload files');
+      return;
+    }
 
     setIsUploading(true);
     const uploadPromises = Array.from(files).map(async (file) => {
       try {
+        console.log('Uploading file:', file.name);
         setUploadProgress(prev => ({ ...prev, [file.name]: 0 }));
         
         // Get file category
         const category = getFileCategory(file);
+        console.log('File category:', category);
         
         // Upload to Supabase Storage
         const { data: uploadData, error: uploadError } = await uploadFile(file, category);
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
 
         setUploadProgress(prev => ({ ...prev, [file.name]: 50 }));
 
         // Get public URL
         const fileUrl = getFileUrl(uploadData.path);
+        console.log('File URL generated:', fileUrl);
         
         // Save metadata to database
         const fileMetadata = {
@@ -109,14 +137,19 @@ const MediaManagement = () => {
           uploaded_by: user?.email || 'anonymous',
         };
 
+        console.log('Saving file metadata:', fileMetadata);
         const { data: dbData, error: dbError } = await saveFileMetadata(fileMetadata);
-        if (dbError) throw dbError;
+        if (dbError) {
+          console.error('Database error:', dbError);
+          throw dbError;
+        }
 
         setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
+        console.log('File uploaded successfully:', file.name);
         
         return { success: true, file: file.name };
       } catch (error) {
-        console.error('Upload error:', error);
+        console.error('Upload error for file', file.name, ':', error);
         return { success: false, file: file.name, error };
       }
     });
@@ -125,6 +158,8 @@ const MediaManagement = () => {
       const results = await Promise.all(uploadPromises);
       const successful = results.filter(r => r.success).length;
       const failed = results.filter(r => !r.success).length;
+
+      console.log('Upload results:', { successful, failed });
 
       if (successful > 0) {
         toast({
@@ -135,16 +170,19 @@ const MediaManagement = () => {
       }
 
       if (failed > 0) {
+        const failedFiles = results.filter(r => !r.success);
+        console.error('Failed uploads:', failedFiles);
         toast({
-          title: "خطأ جزئي",
-          description: `فشل رفع ${failed} ملف`,
+          title: "خطأ في الرفع",
+          description: `فشل رفع ${failed} ملف - تحقق من اتصال الإنترنت وإعدادات Supabase`,
           variant: "destructive",
         });
       }
     } catch (error) {
+      console.error('General upload error:', error);
       toast({
         title: "خطأ",
-        description: "فشل في رفع الملفات",
+        description: "فشل في رفع الملفات. تحقق من إعدادات قاعدة البيانات",
         variant: "destructive",
       });
     } finally {
@@ -158,7 +196,17 @@ const MediaManagement = () => {
   };
 
   const handleDeleteFile = async (file: MediaFile) => {
+    if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+      toast({
+        title: "خطأ في التكوين",
+        description: "لم يتم تكوين Supabase. لا يمكن حذف الملفات",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
+      console.log('Deleting file:', file.name);
       const filePath = file.file_url.split('/').slice(-2).join('/'); // Extract path from URL
       const { success, error } = await deleteFile(file.id, filePath);
       
@@ -216,6 +264,23 @@ const MediaManagement = () => {
         </div>
       </div>
 
+      {/* Configuration Warning */}
+      {(!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) && (
+        <Card className="border-yellow-200 bg-yellow-50">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <AlertCircle className="h-6 w-6 text-yellow-600" />
+              <div>
+                <h3 className="font-medium text-yellow-800">تحذير التكوين</h3>
+                <p className="text-sm text-yellow-700">
+                  لم يتم تكوين Supabase. رفع الملفات وحذفها غير متاح حالياً. يتم عرض بيانات تجريبية فقط.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Upload Progress */}
       {Object.keys(uploadProgress).length > 0 && (
         <Card>
@@ -234,6 +299,7 @@ const MediaManagement = () => {
                     />
                   </div>
                   <span className="text-sm w-12 text-right">{progress}%</span>
+                  {progress === 100 && <CheckCircle className="h-4 w-4 text-green-600" />}
                 </div>
               ))}
             </div>
@@ -350,6 +416,7 @@ const MediaManagement = () => {
                       onClick={() => handleDeleteFile(file)}
                       className="p-1 text-muted-foreground hover:text-destructive transition-colors"
                       title="حذف"
+                      disabled={!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -367,11 +434,7 @@ const MediaManagement = () => {
                         target.style.display = 'none';
                         const parent = target.parentElement;
                         if (parent) {
-                          const iconContainer = document.createElement('div');
-                          iconContainer.className = 'flex items-center justify-center w-full h-full';
-                          iconContainer.appendChild(getFileIcon(file.category).props.children || document.createElement('div'));
-                          parent.innerHTML = '';
-                          parent.appendChild(iconContainer);
+                          parent.innerHTML = '<div class="flex items-center justify-center w-full h-full text-muted-foreground"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>';
                         }
                       }}
                     />

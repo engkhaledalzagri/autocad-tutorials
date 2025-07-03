@@ -38,26 +38,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Check if Supabase is configured
     const hasSupabase = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
     
+    console.log('Auth initialization - Supabase configured:', hasSupabase);
+    
     if (!hasSupabase) {
       console.log('Supabase not configured, running in demo mode');
       // Set a demo user for testing
-      setUser({ id: 'demo', email: 'demo@example.com' });
+      const demoUser = { id: 'demo', email: 'admin@demo.com' };
+      setUser(demoUser);
       setIsAdmin(true);
+      console.log('Demo user set:', demoUser);
     }
     
     setLoading(false);
   }, []);
 
   const signOut = async () => {
+    console.log('Signing out user');
     setUser(null);
     setIsAdmin(false);
   };
 
   const signIn = async (email: string, password: string) => {
+    console.log('Attempting sign in for:', email);
+    
     // Demo login - accept any credentials
     if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
-      setUser({ id: 'demo', email });
-      setIsAdmin(email.includes('admin'));
+      const newUser = { id: 'demo', email };
+      const isUserAdmin = email.includes('admin') || email === 'admin@demo.com';
+      
+      setUser(newUser);
+      setIsAdmin(isUserAdmin);
+      
+      console.log('Demo login successful:', { user: newUser, isAdmin: isUserAdmin });
       return {};
     }
     
@@ -65,9 +77,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const signUp = async (email: string, password: string) => {
+    console.log('Attempting sign up for:', email);
+    
     // Demo signup - accept any credentials
     if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
-      setUser({ id: 'demo', email });
+      const newUser = { id: 'demo', email };
+      setUser(newUser);
+      console.log('Demo signup successful:', newUser);
       return {};
     }
     
@@ -82,6 +98,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     signIn,
     signUp,
   };
+
+  console.log('Auth context current state:', { user, loading, isAdmin });
 
   return (
     <AuthContext.Provider value={value}>
