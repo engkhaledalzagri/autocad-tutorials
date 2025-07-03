@@ -1,58 +1,51 @@
-
 import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LogIn, User, Lock, Mail } from 'lucide-react';
+import { UserPlus, User, Lock, Mail } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-const loginSchema = z.object({
+const registerSchema = z.object({
   email: z.string().email('البريد الإلكتروني غير صحيح'),
-  password: z.string().min(1, 'كلمة المرور مطلوبة'),
+  password: z.string().min(6, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "كلمات المرور غير متطابقة",
+  path: ["confirmPassword"],
 });
 
-type LoginFormData = z.infer<typeof loginSchema>;
+type RegisterFormData = z.infer<typeof registerSchema>;
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, user } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Redirect if already logged in
-  React.useEffect(() => {
-    if (user) {
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
-    }
-  }, [user, navigate, location]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
     
-    const { success, error } = await signIn(data.email, data.password);
+    const { success, error } = await signUp(data.email, data.password);
     
     if (success) {
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
+      navigate('/login');
     } else {
-      setError('root', { message: error || 'فشل في تسجيل الدخول' });
+      setError('root', { message: error || 'فشل في إنشاء الحساب' });
     }
     
     setIsLoading(false);
@@ -67,13 +60,13 @@ const LoginPage = () => {
             <Card className="shadow-lg">
               <CardHeader className="text-center">
                 <div className="w-16 h-16 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <LogIn className="w-8 h-8 text-primary-foreground" />
+                  <UserPlus className="w-8 h-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="text-2xl font-cairo text-foreground">
-                  تسجيل الدخول
+                  إنشاء حساب جديد
                 </CardTitle>
                 <p className="text-muted-foreground font-cairo">
-                  ادخل بياناتك للوصول إلى حسابك
+                  أدخل بياناتك لإنشاء حسابك الجديد
                 </p>
               </CardHeader>
               <CardContent>
@@ -116,6 +109,25 @@ const LoginPage = () => {
                     )}
                   </div>
 
+                  <div>
+                    <Label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-2 font-cairo">
+                      تأكيد كلمة المرور
+                    </Label>
+                    <div className="relative">
+                      <Lock className="absolute right-3 top-3 w-5 h-5 text-muted-foreground" />
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        className="pr-10"
+                        placeholder="أدخل كلمة المرور مرة أخرى"
+                        {...register('confirmPassword')}
+                      />
+                    </div>
+                    {errors.confirmPassword && (
+                      <p className="text-sm text-destructive mt-1">{errors.confirmPassword.message}</p>
+                    )}
+                  </div>
+
                   {errors.root && (
                     <div className="text-sm text-destructive text-center">
                       {errors.root.message}
@@ -130,12 +142,12 @@ const LoginPage = () => {
                     {isLoading ? (
                       <>
                         <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin ml-2" />
-                        جاري تسجيل الدخول...
+                        جاري إنشاء الحساب...
                       </>
                     ) : (
                       <>
-                        <LogIn className="w-5 h-5 ml-2" />
-                        تسجيل الدخول
+                        <UserPlus className="w-5 h-5 ml-2" />
+                        إنشاء حساب
                       </>
                     )}
                   </Button>
@@ -143,9 +155,9 @@ const LoginPage = () => {
 
                 <div className="mt-6 text-center">
                   <p className="text-muted-foreground font-cairo">
-                    ليس لديك حساب؟{' '}
-                    <Link to="/register" className="text-primary hover:underline font-cairo">
-                      إنشاء حساب جديد
+                    لديك حساب بالفعل؟{' '}
+                    <Link to="/login" className="text-primary hover:underline font-cairo">
+                      تسجيل الدخول
                     </Link>
                   </p>
                 </div>
@@ -159,4 +171,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

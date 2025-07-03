@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 import { uploadFile, getFileUrl, saveFileMetadata, getMediaFiles, deleteFile, type MediaFile } from '@/lib/supabase';
 
 const MediaManagement = () => {
@@ -14,6 +15,7 @@ const MediaManagement = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Load media files on component mount
   useEffect(() => {
@@ -104,7 +106,7 @@ const MediaManagement = () => {
           file_url: fileUrl,
           category: category,
           status: 'active' as const,
-          uploaded_by: 'admin', // In real app, get from auth
+          uploaded_by: user?.email || 'anonymous',
         };
 
         const { data: dbData, error: dbError } = await saveFileMetadata(fileMetadata);
@@ -361,8 +363,16 @@ const MediaManagement = () => {
                       alt={file.name}
                       className="max-w-full max-h-full object-cover rounded-lg"
                       onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.parentElement!.innerHTML = `<div class="flex items-center justify-center w-full h-full">${getFileIcon(file.category)}</div>`;
+                        const target = e.currentTarget as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          const iconContainer = document.createElement('div');
+                          iconContainer.className = 'flex items-center justify-center w-full h-full';
+                          iconContainer.appendChild(getFileIcon(file.category).props.children || document.createElement('div'));
+                          parent.innerHTML = '';
+                          parent.appendChild(iconContainer);
+                        }
                       }}
                     />
                   </div>

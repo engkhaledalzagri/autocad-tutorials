@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import TutorialsPage from "./pages/TutorialsPage";
 import VideosPage from "./pages/VideosPage";
@@ -14,6 +16,7 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import SitemapPage from "./pages/SitemapPage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./components/auth/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 import TutorialDetailsPage from "./pages/TutorialDetailsPage";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -24,27 +27,38 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/tutorials" element={<TutorialsPage />} />
-          <Route path="/videos" element={<VideosPage />} />
-          <Route path="/images" element={<ImagesPage />} />
-          <Route path="/files" element={<FilesPage />} />
-          <Route path="/explanations" element={<ExplanationsPage />} />
-          <Route path="/tutorial/:id" element={<TutorialDetailsPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/sitemap" element={<SitemapPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/admin/*" element={<AdminDashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/tutorials" element={<TutorialsPage />} />
+            <Route path="/videos" element={<VideosPage />} />
+            <Route path="/images" element={<ImagesPage />} />
+            <Route path="/files" element={<FilesPage />} />
+            <Route path="/explanations" element={<ExplanationsPage />} />
+            <Route path="/tutorial/:id" element={<TutorialDetailsPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/sitemap" element={<SitemapPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/*" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -145,7 +146,12 @@ const TutorialDetailsPage = () => {
                   <CardContent className="p-8">
                     <div 
                       className="prose prose-lg max-w-none font-cairo"
-                      dangerouslySetInnerHTML={{ __html: tutorial.content }}
+                      dangerouslySetInnerHTML={{ 
+                        __html: DOMPurify.sanitize(tutorial.content, {
+                          ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'ul', 'ol', 'li', 'strong', 'em', 'br'],
+                          ALLOWED_ATTR: []
+                        })
+                      }}
                     />
                   </CardContent>
                 </Card>
