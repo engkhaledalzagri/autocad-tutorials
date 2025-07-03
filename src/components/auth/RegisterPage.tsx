@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -40,12 +41,12 @@ const RegisterPage = () => {
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
     
-    const { success, error } = await signUp(data.email, data.password);
+    const { error } = await signUp(data.email, data.password);
     
-    if (success) {
+    if (!error) {
       navigate('/login');
     } else {
-      setError('root', { message: error || 'فشل في إنشاء الحساب' });
+      setError('root', { message: error.message || 'فشل في إنشاء الحساب' });
     }
     
     setIsLoading(false);

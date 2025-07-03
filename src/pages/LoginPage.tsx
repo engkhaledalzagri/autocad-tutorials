@@ -46,13 +46,13 @@ const LoginPage = () => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     
-    const { success, error } = await signIn(data.email, data.password);
+    const { error } = await signIn(data.email, data.password);
     
-    if (success) {
+    if (!error) {
       const from = location.state?.from?.pathname || '/';
       navigate(from, { replace: true });
     } else {
-      setError('root', { message: error || 'فشل في تسجيل الدخول' });
+      setError('root', { message: error.message || 'فشل في تسجيل الدخول' });
     }
     
     setIsLoading(false);
