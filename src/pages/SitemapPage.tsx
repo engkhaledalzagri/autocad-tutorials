@@ -25,7 +25,8 @@ const SitemapPage = () => {
         { name: "الفيديوهات", url: "/videos", icon: Video },
         { name: "الصور والمشاريع", url: "/images", icon: Image },
         { name: "الملفات والموارد", url: "/files", icon: FileText },
-        { name: "الشروحات التفصيلية", url: "/explanations", icon: HelpCircle }
+        { name: "الشروحات التفصيلية", url: "/explanations", icon: HelpCircle },
+        { name: "دروس أوتوكاد", url: "/autocad-tutorials", icon: Video }
       ]
     },
     {

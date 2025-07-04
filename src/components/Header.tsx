@@ -37,6 +37,9 @@ const Header = () => {
             <Link to="/explanations" className="text-foreground hover:text-primary">
               الشروحات
             </Link>
+            <Link to="/autocad-tutorials" className="text-foreground hover:text-primary">
+              دروس أوتوكاد
+            </Link>
             <Link to="/about" className="text-foreground hover:text-primary">
               حول الموقع
             </Link>

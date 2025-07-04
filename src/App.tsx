@@ -12,6 +12,7 @@ import VideosPage from "./pages/VideosPage";
 import ImagesPage from "./pages/ImagesPage";
 import FilesPage from "./pages/FilesPage";
 import ExplanationsPage from "./pages/ExplanationsPage";
+import AutocadTutorialsPage from "./pages/AutocadTutorialsPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import SitemapPage from "./pages/SitemapPage";
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/images" element={<ImagesPage />} />
             <Route path="/files" element={<FilesPage />} />
             <Route path="/explanations" element={<ExplanationsPage />} />
+            <Route path="/autocad-tutorials" element={<AutocadTutorialsPage />} />
             <Route path="/tutorial/:id" element={<TutorialDetailsPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
