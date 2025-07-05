@@ -1,59 +1,90 @@
-
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import TutorialCard from '@/components/TutorialCard';
-
-const ExplanationsPage = () => {
-  const explanations = [
-    {
-      id: 1,
-      title: "شرح مفصل لأدوات الرسم الأساسية",
-      description: "دليل شامل لجميع أدوات الرسم في الأوتوكاد مع أمثلة عملية",
-      type: "tutorial" as const,
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      date: "2024-01-22",
-      author: "أحمد محمد",
-      tags: ["أدوات", "رسم", "شرح"],
-    },
-    {
-      id: 2,
-      title: "فهم نظام الإحداثيات في الأوتوكاد",
-      description: "شرح مبسط لنظام الإحداثيات وكيفية استخدامه بفعالية",
-      type: "tutorial" as const,
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      date: "2024-01-20",
-      author: "فاطمة خالد",
-      tags: ["إحداثيات", "أساسيات", "نظام"],
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-white font-cairo">
-      <Header />
-      <main className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-autocad-gray mb-4 font-cairo">
-              الشروحات التفصيلية
-            </h1>
-            <p className="text-lg text-gray-600 font-cairo">
-              شروحات مفصلة ومبسطة لجميع جوانب برنامج الأوتوكاد
-            </p>
+import { Link } from 'react-router-dom';
+import { Settings, User, LogIn, LogOut, Map } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+const Header = () => {
+  const {
+    user,
+    signOut,
+    isAdmin
+  } = useAuth();
+  return <header className="bg-background shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          <div className="flex items-center">
+            <Link to="/" className="text-2xl font-bold text-primary">
+              موقع الأوتوكاد
+            </Link>
           </div>
+          
+          <nav className="hidden md:flex space-x-8">
+            <Link to="/" className="text-foreground hover:text-primary">
+              الرئيسية
+            </Link>
+            <Link to="/tutorials" className="text-foreground hover:text-primary">
+          </Link>
+            <Link to="/videos" className="text-foreground hover:text-primary">
+              الفيديوهات
+            </Link>
+            <Link to="/images" className="text-foreground hover:text-primary">
+              الصور
+            </Link>
+            <Link to="/files" className="text-foreground hover:text-primary">الملفات</Link>
+            <Link to="/explanations" className="text-foreground hover:text-primary">
+              حدائق ومنازل
+            </Link>
+            <Link to="/autocad-tutorials" className="text-foreground hover:text-primary">
+              دروس أوتوكاد
+            </Link>
+            <Link to="/about" className="text-foreground hover:text-primary">
+              حول الموقع
+            </Link>
+            <Link to="/contact" className="text-foreground hover:text-primary">
+              تواصل معنا
+            </Link>
+            <Link to="/sitemap" className="text-foreground hover:text-primary flex items-center gap-1">
+              <Map size={16} />
+              خريطة الموقع
+            </Link>
+          </nav>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {explanations.map((explanation, index) => (
-              <div key={explanation.id} className="animate-fadeInUp" style={{ animationDelay: `${index * 0.1}s` }}>
-                <TutorialCard {...explanation} />
-              </div>
-            ))}
+          <div className="flex items-center gap-4">
+            {user ? <>
+                <span className="text-sm text-muted-foreground">
+                  مرحباً، {user.email}
+                </span>
+                <Link to="/profile" className="flex items-center gap-2 text-foreground hover:text-primary">
+                  <User size={16} />
+                  الملف الشخصي
+                </Link>
+                {isAdmin && <Link to="/admin" className="flex items-center gap-2 text-foreground hover:text-primary">
+                    <Settings size={16} />
+                    لوحة التحكم
+                  </Link>}
+                <Button variant="outline" size="sm" onClick={signOut} className="flex items-center gap-2">
+                  <LogOut size={16} />
+                  تسجيل الخروج
+                </Button>
+              </> : <>
+                <Link to="/login" className="flex items-center gap-2 text-foreground hover:text-primary">
+                  <LogIn size={16} />
+                  تسجيل الدخول
+                </Link>
+                <Link to="/register" className="flex items-center gap-2 text-foreground hover:text-primary">
+                  <User size={16} />
+                  إنشاء حساب
+                </Link>
+              </>}
           </div>
+          
+          <button className="md:hidden">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
         </div>
-      </main>
-      <Footer />
-    </div>
-  );
+      </div>
+    </header>;
 };
-
-export default ExplanationsPage;
+export default Header;
