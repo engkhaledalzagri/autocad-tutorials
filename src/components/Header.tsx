@@ -1,15 +1,15 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Settings, User, LogIn, LogOut, Map } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-
 const Header = () => {
-  const { user, signOut, isAdmin } = useAuth();
-
-  return (
-    <header className="bg-background shadow-sm border-b">
+  const {
+    user,
+    signOut,
+    isAdmin
+  } = useAuth();
+  return <header className="bg-background shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
@@ -23,8 +23,7 @@ const Header = () => {
               الرئيسية
             </Link>
             <Link to="/tutorials" className="text-foreground hover:text-primary">
-              الدروس
-            </Link>
+          </Link>
             <Link to="/videos" className="text-foreground hover:text-primary">
               الفيديوهات
             </Link>
@@ -53,55 +52,32 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-4">
-            {user ? (
-              <>
+            {user ? <>
                 <span className="text-sm text-muted-foreground">
                   مرحباً، {user.email}
                 </span>
-                <Link 
-                  to="/profile" 
-                  className="flex items-center gap-2 text-foreground hover:text-primary"
-                >
+                <Link to="/profile" className="flex items-center gap-2 text-foreground hover:text-primary">
                   <User size={16} />
                   الملف الشخصي
                 </Link>
-                {isAdmin && (
-                  <Link 
-                    to="/admin" 
-                    className="flex items-center gap-2 text-foreground hover:text-primary"
-                  >
+                {isAdmin && <Link to="/admin" className="flex items-center gap-2 text-foreground hover:text-primary">
                     <Settings size={16} />
                     لوحة التحكم
-                  </Link>
-                )}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={signOut}
-                  className="flex items-center gap-2"
-                >
+                  </Link>}
+                <Button variant="outline" size="sm" onClick={signOut} className="flex items-center gap-2">
                   <LogOut size={16} />
                   تسجيل الخروج
                 </Button>
-              </>
-            ) : (
-              <>
-                <Link 
-                  to="/login" 
-                  className="flex items-center gap-2 text-foreground hover:text-primary"
-                >
+              </> : <>
+                <Link to="/login" className="flex items-center gap-2 text-foreground hover:text-primary">
                   <LogIn size={16} />
                   تسجيل الدخول
                 </Link>
-                <Link 
-                  to="/register" 
-                  className="flex items-center gap-2 text-foreground hover:text-primary"
-                >
+                <Link to="/register" className="flex items-center gap-2 text-foreground hover:text-primary">
                   <User size={16} />
                   إنشاء حساب
                 </Link>
-              </>
-            )}
+              </>}
           </div>
           
           <button className="md:hidden">
@@ -111,8 +87,6 @@ const Header = () => {
           </button>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
