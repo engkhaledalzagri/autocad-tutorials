@@ -1,118 +1,196 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, FileText, Archive, Image } from 'lucide-react';
-import { getMediaFiles, type MediaFile } from '@/lib/supabase';
-const FilesPage = () => {
-  const [files, setFiles] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    loadFiles();
-  }, []);
-  const loadFiles = async () => {
-    try {
-      const {
-        data,
-        error
-      } = await getMediaFiles('document');
-      if (error) throw error;
+import { ExternalLink, Users, Youtube, Linkedin, MessageCircle, Globe } from 'lucide-react';
 
-      // Transform MediaFile to file format
-      const transformedFiles = (data || []).map((file: MediaFile) => ({
-        id: parseInt(file.id),
-        name: file.file_name,
-        type: getFileType(file.file_type),
-        size: formatFileSize(file.file_size),
-        downloads: Math.floor(Math.random() * 2000) + 100,
-        // Placeholder for downloads
-        icon: getFileIcon(file.file_type),
-        description: file.description || 'ملف مفيد للأوتوكاد',
-        url: file.file_url
-      }));
-      setFiles(transformedFiles);
-    } catch (error) {
-      console.error('Error loading files:', error);
-    } finally {
-      setLoading(false);
+const FilesPage = () => {
+  const channelInfo = {
+    name: "AutoCad Tutorials YQARCH",
+    subscribers: "18,065",
+    telegramUrl: "https://t.me/K0H1A2L3E4D5",
+    youtubeUrl: "https://youtube.com/@Eng.KhaledAl-Zagri",
+    websiteUrl: "https://engkhaledalzagri.netlify.app/",
+    tiktokUrl: "https://www.tiktok.com/@inspiration4cad",
+    linkedinUrl: "https://ye.linkedin.com/in/engkhaledalzagri1"
+  };
+
+  const socialLinks = [
+    {
+      name: "قناة التيليجرام",
+      icon: MessageCircle,
+      url: channelInfo.telegramUrl,
+      description: "انضم إلى قناتنا الرئيسية على التيليجرام",
+      color: "bg-blue-500"
+    },
+    {
+      name: "قناة اليوتيوب",
+      icon: Youtube,
+      url: channelInfo.youtubeUrl,
+      description: "شاهد جميع دروس الأوتوكاد المرئية",
+      color: "bg-red-500"
+    },
+    {
+      name: "الموقع الشخصي",
+      icon: Globe,
+      url: channelInfo.websiteUrl,
+      description: "زيارة الموقع الشخصي للمهندس خالد الزجري",
+      color: "bg-green-500"
+    },
+    {
+      name: "حساب لينكد إن",
+      icon: Linkedin,
+      url: channelInfo.linkedinUrl,
+      description: "تواصل معنا على لينكد إن",
+      color: "bg-blue-600"
     }
-  };
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-  };
-  const getFileType = (mimeType: string): string => {
-    if (mimeType.includes('pdf')) return 'PDF';
-    if (mimeType.includes('word') || mimeType.includes('document')) return 'Document';
-    if (mimeType.includes('zip') || mimeType.includes('archive')) return 'Archive';
-    if (mimeType.includes('autocad') || mimeType.includes('dwg')) return 'AutoCAD';
-    return 'File';
-  };
-  const getFileIcon = (mimeType: string) => {
-    if (mimeType.includes('zip') || mimeType.includes('archive')) return Archive;
-    if (mimeType.includes('image')) return Image;
-    return FileText;
-  };
-  return <div className="min-h-screen bg-white font-cairo">
+  ];
+
+  return (
+    <div className="min-h-screen bg-white font-cairo">
       <Header />
       <main className="py-16">
         <div className="container mx-auto px-4">
+          {/* Header Section */}
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-autocad-gray mb-4 font-cairo">
-              مكتبة الملفات والموارد
+              قناة AutoCad Tutorials YQARCH
             </h1>
-            <p className="font-cairo text-xl text-indigo-600 font-semibold">تحميل الملفات والموارد المجانية لبرنامج الأوتوكاد قم بالإنضمام إلى قناتنا على التيليجرام 
-AutoCad Tutorials YQARCH
-
-
-https://t.me/K0H1A2L3E4D5
-
-
-          </p>
+            <p className="font-cairo text-xl text-indigo-600 font-semibold mb-8">
+              انضم إلى أكبر مجتمع عربي لتعلم الأوتوكاد والتصميم الهندسي
+            </p>
           </div>
 
-          {loading ? <div className="flex justify-center items-center py-12">
-              <div className="w-8 h-8 border-4 border-autocad-blue border-t-transparent rounded-full animate-spin"></div>
-              <span className="mr-3 text-autocad-gray">جاري التحميل...</span>
-            </div> : files.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {files.map(file => <Card key={file.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 bg-slate-50">
-                      <div className="w-12 h-12 bg-autocad-blue/10 flex items-center justify-center rounded-lg">
-                        <file.icon className="w-6 h-6 text-autocad-blue" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg font-cairo text-autocad-gray">
-                          {file.name}
-                        </CardTitle>
-                        <p className="text-sm text-gray-500 font-cairo">{file.type} • {file.size}</p>
-                      </div>
+          {/* Channel Info Card */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200">
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl font-bold text-autocad-gray mb-4">
+                  معلومات القناة
+                </CardTitle>
+                <div className="flex justify-center items-center gap-8 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-6 h-6 text-blue-600" />
+                    <span className="text-lg font-semibold">{channelInfo.subscribers} مشترك</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="w-6 h-6 text-blue-600" />
+                    <span className="text-lg font-semibold">محتوى يومي</span>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-gray-700 mb-6 text-lg">
+                  قناة متخصصة في تعليم برنامج الأوتوكاد والتصميم الهندسي باللغة العربية
+                  <br />
+                  نقدم دروس مجانية، ملفات تدريبية، ونصائح مهنية للمهندسين والطلاب
+                </p>
+                <Button
+                  onClick={() => window.open(channelInfo.telegramUrl, '_blank')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-3"
+                >
+                  <MessageCircle className="w-5 h-5 ml-2" />
+                  انضم إلى القناة الآن
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Social Links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+            {socialLinks.map((link, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 ${link.color} flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform`}>
+                      <link.icon className="w-6 h-6 text-white" />
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4 font-cairo">{file.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500 font-cairo">
-                        {file.downloads} تحميل
-                      </span>
-                      <Button onClick={() => window.open(file.url, '_blank')} className="https://t.me/K0H1A2L3E4D5">
-                        <Download className="w-4 h-4 ml-2" />
-                        تحميل
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-autocad-gray mb-2">
+                        {link.name}
+                      </h3>
+                      <p className="text-gray-600 mb-3">
+                        {link.description}
+                      </p>
+                      <Button
+                        onClick={() => window.open(link.url, '_blank')}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                        زيارة الرابط
                       </Button>
                     </div>
-                  </CardContent>
-                </Card>)}
-            </div> : <div className="text-center py-12">
-              <h3 className="text-xl font-bold text-autocad-gray mb-4">لا توجد ملفات حالياً</h3>
-              <p className="text-gray-600">سيتم إضافة المزيد من الملفات قريباً</p>
-            </div>}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Telegram Widget */}
+          <div className="max-w-4xl mx-auto">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-center text-2xl font-bold text-autocad-gray">
+                  آخر منشورات القناة
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <iframe
+                    src={`https://t.me/s/K0H1A2L3E4D5?embed=1`}
+                    width="100%"
+                    height="500"
+                    frameBorder="0"
+                    scrolling="no"
+                    className="rounded-lg border border-gray-200"
+                    title="Telegram Channel"
+                  ></iframe>
+                </div>
+                <div className="text-center mt-6">
+                  <p className="text-gray-600 mb-4">
+                    لمشاهدة جميع المنشورات والتفاعل مع المحتوى
+                  </p>
+                  <Button
+                    onClick={() => window.open(channelInfo.telegramUrl, '_blank')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <MessageCircle className="w-4 h-4 ml-2" />
+                    فتح القناة في التيليجرام
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center mt-12">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-8 max-w-2xl mx-auto">
+              <h2 className="text-2xl font-bold mb-4">لا تفوت أي جديد!</h2>
+              <p className="text-lg mb-6">
+                انضم إلى مجتمعنا المتنامي واحصل على:
+              </p>
+              <ul className="text-right mb-6 space-y-2">
+                <li>• دروس مجانية يومية</li>
+                <li>• ملفات تدريبية حصرية</li>
+                <li>• نصائح من خبراء في المجال</li>
+                <li>• إجابات على استفساراتك</li>
+              </ul>
+              <Button
+                onClick={() => window.open(channelInfo.telegramUrl, '_blank')}
+                className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-3"
+              >
+                <MessageCircle className="w-5 h-5 ml-2" />
+                اشترك الآن مجاناً
+              </Button>
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default FilesPage;
