@@ -137,29 +137,42 @@ const FilesPage = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8">
-                  <iframe
-                    src={`https://t.me/s/K0H1A2L3E4D5?embed=1`}
-                    width="100%"
-                    height="500"
-                    frameBorder="0"
-                    scrolling="no"
-                    className="rounded-lg border border-gray-200"
-                    title="Telegram Channel"
-                  ></iframe>
-                </div>
-                <div className="text-center mt-6">
-                  <p className="text-gray-600 mb-4">
-                    لمشاهدة جميع المنشورات والتفاعل مع المحتوى
-                  </p>
-                  <Button
-                    onClick={() => window.open(channelInfo.telegramUrl, '_blank')}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    <MessageCircle className="w-4 h-4 ml-2" />
-                    فتح القناة في التيليجرام
-                  </Button>
-                </div>
+          <div className="text-center py-8">
+            <h3 className="text-2xl font-bold text-autocad-gray mb-6">
+              YQArch Plugin For All AutoCad Versions
+            </h3>
+            <div className="mb-6">
+              <img
+                src="/lovable-uploads/094eda5f-be87-4d20-9354-db36df94e47b.png"
+                alt="YQArch Plugin"
+                className="mx-auto rounded-lg shadow-lg max-w-md w-full"
+              />
+            </div>
+            <div className="bg-blue-50 p-4 rounded-lg mb-4">
+              <p className="text-gray-700 mb-4">
+                لتحميل الإضافة من الرابط التالي على تيليجرام
+              </p>
+              <Button
+                onClick={() => window.open('https://t.me/K0H1A2L3E4D5/592', '_blank')}
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
+                <ExternalLink className="w-4 h-4 ml-2" />
+                تحميل الإضافة
+              </Button>
+            </div>
+          </div>
+          <div className="text-center mt-6">
+            <p className="text-gray-600 mb-4">
+              لمشاهدة جميع المنشورات والتفاعل مع المحتوى
+            </p>
+            <Button
+              onClick={() => window.open(channelInfo.telegramUrl, '_blank')}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <MessageCircle className="w-4 h-4 ml-2" />
+              فتح القناة في التيليجرام
+            </Button>
+          </div>
               </CardContent>
             </Card>
           </div>
