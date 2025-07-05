@@ -30,9 +30,7 @@ const Header = () => {
             <Link to="/images" className="text-foreground hover:text-primary">
               الصور
             </Link>
-            <Link to="/files" className="text-foreground hover:text-primary">
-              الملفات
-            </Link>
+            <Link to="/files" className="text-foreground hover:text-primary">الملفات</Link>
             <Link to="/explanations" className="text-foreground hover:text-primary">
               الشروحات
             </Link>
