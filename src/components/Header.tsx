@@ -32,7 +32,7 @@ const Header = () => {
             </Link>
             <Link to="/files" className="text-foreground hover:text-primary">الملفات</Link>
             <Link to="/explanations" className="text-foreground hover:text-primary">
-              الشروحات
+              حدائق ومنازل
             </Link>
             <Link to="/autocad-tutorials" className="text-foreground hover:text-primary">
               دروس أوتوكاد
