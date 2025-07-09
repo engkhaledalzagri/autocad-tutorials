@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Navigate } from 'react-router-dom';
 import { 
   Settings, 
   FileText, 
@@ -10,6 +9,7 @@ import {
   LayoutDashboard 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -17,6 +17,7 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { user, loading, isAdmin } = useAuth();
 
   const menuItems = [
     {
@@ -41,9 +42,16 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     }
   ];
 
+  if (loading) {
+    return <div>جاري التحميل...</div>;
+  }
+
+  if (!user || !isAdmin) {
+    return <Navigate to="/login" replace />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 font-cairo">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
@@ -69,7 +77,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       </header>
 
       <div className="flex">
-        {/* Sidebar */}
         <aside className={cn(
           "bg-white shadow-sm border-l transition-all duration-300",
           sidebarOpen ? "w-64" : "w-16"
@@ -99,7 +106,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </nav>
         </aside>
 
-        {/* Main Content */}
         <main className="flex-1 p-6">
           {children}
         </main>
