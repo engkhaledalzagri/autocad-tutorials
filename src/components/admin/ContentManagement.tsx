@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import ContentForm from './ContentForm';
 import ContentHeader from './ContentHeader';
@@ -12,7 +11,6 @@ const ContentManagement = () => {
   const [selectedType, setSelectedType] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
 
-  // Sample data - in real app this would come from a database
   const contents = [
     {
       id: 1,
@@ -70,7 +68,6 @@ const ContentManagement = () => {
   return (
     <div className="space-y-6">
       <ContentHeader onAddContent={handleAddContent} />
-      
       <ContentFilters
         searchTerm={searchTerm}
         selectedType={selectedType}
@@ -79,7 +76,6 @@ const ContentManagement = () => {
         onTypeChange={setSelectedType}
         onStatusChange={setSelectedStatus}
       />
-
       <ContentTable
         contents={contents}
         filteredContents={filteredContents}
@@ -87,8 +83,6 @@ const ContentManagement = () => {
         onViewContent={handleViewContent}
         onDeleteContent={handleDeleteContent}
       />
-
-      {/* Content Form Modal */}
       {showForm && (
         <ContentForm
           content={editingContent}
