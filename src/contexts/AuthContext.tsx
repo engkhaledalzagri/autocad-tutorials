@@ -33,11 +33,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // اجعل المدير هو بريدك
   const isAdmin = user?.email === 'engkhaledalzagri2019@gmail.com' || user?.user_metadata?.role === 'admin';
 
   useEffect(() => {
-    // جلب جلسة المستخدم الحالية
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
@@ -47,7 +45,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     getSession();
 
-    // راقب تغييرات الجلسة
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
