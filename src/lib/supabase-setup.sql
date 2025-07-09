@@ -1,27 +1,54 @@
--- Database setup for security
--- Run these commands in your Supabase SQL editor
+-- إنشاء جدول ملفات الوسائط
+create table if not exists public.media_files (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  file_name text not null,
+  file_type text not null,
+  file_size integer not null,
+  file_url text not null,
+  thumbnail_url text,
+  description text,
+  category text not null,
+  status text default 'active',
+  uploaded_by uuid references auth.users(id),
+  created_at timestamp with time zone default timezone('utc', now()),
+  updated_at timestamp with time zone default timezone('utc', now())
+);
 
--- Enable RLS on media_files table
-ALTER TABLE media_files ENABLE ROW LEVEL SECURITY;
+-- إنشاء فهرس على created_at لتسريع البحث
+create index if not exists idx_media_files_created_at on public.media_files(created_at desc);
 
--- Policy: Users can read active files
-CREATE POLICY "Users can read active media files" ON media_files
-    FOR SELECT USING (status = 'active');
+-- إعداد صلاحيات الإدراج والقراءة والتعديل للمستخدمين المسجلين
+alter table public.media_files
+  enable row level security;
 
--- Policy: Only authenticated users can insert files
-CREATE POLICY "Authenticated users can insert media files" ON media_files
-    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+-- سياسة السماح للقراءة للجميع (يمكنك تخصيصها لاحقًا)
+create policy "Allow select for all users"
+  on public.media_files
+  for select
+  using (true);
 
--- Policy: Users can only update their own files
-CREATE POLICY "Users can update their own media files" ON media_files
-    FOR UPDATE USING (auth.email() = uploaded_by);
+-- سياسة السماح بالإدراج للمستخدمين المسجلين
+create policy "Allow insert for authenticated"
+  on public.media_files
+  for insert
+  with check (auth.role() = 'authenticated');
 
--- Policy: Users can only delete their own files
-CREATE POLICY "Users can delete their own media files" ON media_files
-    FOR DELETE USING (auth.email() = uploaded_by);
+-- سياسة السماح بالتعديل والحذف لصاحب الملف فقط
+create policy "Allow update and delete for owner"
+  on public.media_files
+  for update using (uploaded_by = auth.uid())
+  with check (uploaded_by = auth.uid());
 
--- Create storage bucket policies (run in Storage settings)
--- Bucket: media-files
--- INSERT policy: Allow authenticated users
--- SELECT policy: Allow public access to files
--- UPDATE/DELETE policy: Allow file owners only
+create policy "Allow delete for owner"
+  on public.media_files
+  for delete using (uploaded_by = auth.uid());
+
+-- إعداد حاوية التخزين (Storage Bucket)
+-- (يجب تنفيذ هذا عبر واجهة Supabase أو باستخدام dashboard، لكن إذا أردت SQL خاص بها:)
+insert into storage.buckets (id, name, public) 
+values ('media-files', 'media-files', true)
+on conflict (id) do nothing;
+
+-- إعطاء صلاحية القراءة للجميع على حاوية التخزين
+-- (عادة إعدادات storage تتم من لوحة supabase ولكن هذه إضافة احتياطية)
