@@ -1,10 +1,20 @@
-
 import React from 'react';
 import { FileText, File, Settings, Users } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
+type Stat = {
+  title: string;
+  value: string;
+  description: string;
+  icon: React.ElementType;
+  color: string;
+};
+
+type ActivityType = "content" | "media" | "settings";
+type Activity = { action: string; time: string; type: ActivityType };
+
 const DashboardHome = () => {
-  const stats = [
+  const stats: Stat[] = [
     {
       title: 'المقالات والدروس',
       value: '24',
@@ -35,7 +45,7 @@ const DashboardHome = () => {
     }
   ];
 
-  const recentActivity = [
+  const recentActivity: Activity[] = [
     { action: 'تم إضافة درس جديد', time: 'منذ ساعتين', type: 'content' },
     { action: 'تم رفع 3 صور جديدة', time: 'منذ 4 ساعات', type: 'media' },
     { action: 'تم تحديث إعدادات الموقع', time: 'منذ يوم', type: 'settings' },
