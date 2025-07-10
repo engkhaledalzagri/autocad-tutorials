@@ -103,7 +103,7 @@ const AboutPage = () => {
                     <span className="text-white text-2xl font-bold">م</span>
                   </div>
                   <h3 className="text-xl font-bold text-autocad-gray mb-2 font-cairo">
-                    المهندس أحمد محمد
+                    المهندس خالد الزقري
                   </h3>
                   <p className="text-gray-600 font-cairo">
                     مؤسس الموقع ومدرب الأوتوكاد
@@ -116,10 +116,10 @@ const AboutPage = () => {
                     <span className="text-white text-2xl font-bold">د</span>
                   </div>
                   <h3 className="text-xl font-bold text-autocad-gray mb-2 font-cairo">
-                    الدكتورة فاطمة خالد
+                    المهندس خالد الزقري
                   </h3>
                   <p className="text-gray-600 font-cairo">
-                    خبيرة في التصميم المعماري
+                     خبير في التصميم الإنشائي والمعماري
                   </p>
                 </CardContent>
               </Card>
@@ -129,7 +129,7 @@ const AboutPage = () => {
                     <span className="text-white text-2xl font-bold">م</span>
                   </div>
                   <h3 className="text-xl font-bold text-autocad-gray mb-2 font-cairo">
-                    المهندس عمر حسن
+                    المهندس خالد الزقري
                   </h3>
                   <p className="text-gray-600 font-cairo">
                     مختص في الرسم الهندسي
