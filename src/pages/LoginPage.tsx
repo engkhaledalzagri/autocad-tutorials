@@ -52,7 +52,7 @@ const LoginPage = () => {
       const from = location.state?.from?.pathname || '/';
       navigate(from, { replace: true });
     } else {
-      setError('root', { message: error.message || 'فشل في تسجيل الدخول' });
+      setError('root', { message: typeof error === 'string' ? error : 'فشل في تسجيل الدخول' });
     }
     
     setIsLoading(false);

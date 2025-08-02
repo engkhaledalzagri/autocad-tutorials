@@ -22,6 +22,11 @@ import ProfilePage from "./pages/ProfilePage";
 import TutorialDetailsPage from "./pages/TutorialDetailsPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsOfServicePage from "./pages/TermsOfServicePage";
+import DisclaimerPage from "./pages/DisclaimerPage";
+import FAQPage from "./pages/FAQPage";
+import TutorialCategoriesPage from "./pages/TutorialCategoriesPage";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +61,11 @@ const App = () => (
                 <AdminDashboard />
               </ProtectedRoute>
             } />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/disclaimer" element={<DisclaimerPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/tutorial-categories" element={<TutorialCategoriesPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

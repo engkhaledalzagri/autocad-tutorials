@@ -46,7 +46,7 @@ const RegisterPage = () => {
     if (!error) {
       navigate('/login');
     } else {
-      setError('root', { message: error.message || 'فشل في إنشاء الحساب' });
+      setError('root', { message: typeof error === 'string' ? error : 'فشل في إنشاء الحساب' });
     }
     
     setIsLoading(false);

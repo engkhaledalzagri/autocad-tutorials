@@ -13,11 +13,11 @@ const Footer = () => {
       { name: "نصائح وحيل", href: "#" }
     ],
     support: [
-      { name: "اتصل بنا", href: "#" },
-      { name: "الأسئلة الشائعة", href: "#" },
-      { name: "شروط الاستخدام", href: "#" },
-      { name: "سياسة الخصوصية", href: "#" },
-      { name: "خريطة الموقع", href: "#" }
+      { name: "اتصل بنا", href: "/contact" },
+      { name: "الأسئلة الشائعة", href: "/faq" },
+      { name: "شروط الاستخدام", href: "/terms-of-service" },
+      { name: "سياسة الخصوصية", href: "/privacy-policy" },
+      { name: "خريطة الموقع", href: "/sitemap" }
     ],
     resources: [
       { name: "تحميل ملفات التمرين", href: "#" },
@@ -167,11 +167,13 @@ const Footer = () => {
             &copy; {currentYear} مدونة تعلم الأوتوكاد. جميع الحقوق محفوظة.
           </p>
           <div className="flex justify-center items-center gap-4 mt-2 text-xs text-gray-500">
-            <a href="#" className="hover:text-gray-300 transition-colors font-cairo">شروط الاستخدام</a>
+            <a href="/terms-of-service" className="hover:text-gray-300 transition-colors font-cairo">شروط الاستخدام</a>
             <span>•</span>
-            <a href="#" className="hover:text-gray-300 transition-colors font-cairo">سياسة الخصوصية</a>
+            <a href="/privacy-policy" className="hover:text-gray-300 transition-colors font-cairo">سياسة الخصوصية</a>
             <span>•</span>
-            <a href="#" className="hover:text-gray-300 transition-colors font-cairo">خريطة الموقع</a>
+            <a href="/disclaimer" className="hover:text-gray-300 transition-colors font-cairo">إخلاء المسؤولية</a>
+            <span>•</span>
+            <a href="/sitemap" className="hover:text-gray-300 transition-colors font-cairo">خريطة الموقع</a>
           </div>
         </div>
       </div>
