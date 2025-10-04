@@ -11,6 +11,17 @@ const TutorialsPage = () => {
 
   const tutorials = [
     {
+      id: 6,
+      title: "درس تجريبي جديد من Manus AI",
+      description: "هذا منشور تجريبي تم إنشاؤه بواسطة Manus AI لاختبار وظيفة النشر.",
+      type: "tutorial" as const,
+      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      date: "2025-10-04",
+      author: "Manus AI",
+      tags: ["تجريبي", "AI", "نشر"],
+      content: "محتوى هذا الدرس التجريبي هو لاختبار عملية إضافة منشورات جديدة إلى موقعك. يمكنك تعديل هذا المحتوى أو حذفه لاحقًا."
+    },
+    {
       id: 1,
       title: "أساسيات الرسم في الأوتوكاد للمبتدئين",
       description: "تعلم الأساسيات الأولى للرسم في برنامج الأوتوكاد من الصفر، بما في ذلك واجهة البرنامج والأدوات الأساسية",
